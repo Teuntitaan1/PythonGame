@@ -1,13 +1,19 @@
 from Imports import *
+from Player import Player
+from Photos import Photos
 
-def GameLoop(WindowSizex, WindowSizey, RefreshRate):
 
-    windowsize = width, height = WindowSizex, WindowSizey
+def gameloop(windowsizex, windowsizey, refreshrate):
+
+    windowsize = windowsizex, windowsizey
     pygame.display.set_caption("TriangleGame")
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode(windowsize)
-    refreshRate = RefreshRate
+    refreshrate = refreshrate
     pygame.init()
+
+
+    play = Player(Photos["Triangle"], "Player1", "Player", 400, 400)
 
     while 1:
 
@@ -15,6 +21,6 @@ def GameLoop(WindowSizex, WindowSizey, RefreshRate):
             if event.type == pygame.QUIT:
                 sys.exit()
 
-        clock.tick(refreshRate)
+        play.update(screen)
+        clock.tick(refreshrate)
         pygame.display.update()
-

@@ -1,3 +1,3 @@
 import MainGameLoop
 
-MainGameLoop.GameLoop(800, 800, 60)
+MainGameLoop.gameloop(800, 800, 60)
