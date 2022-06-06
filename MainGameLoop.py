@@ -1,4 +1,6 @@
 # Import statements
+import pygame.sprite
+
 import Colors
 from Imports import *
 from Player import Player
@@ -19,7 +21,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     font = pygame.font.SysFont("Vera", 40)
 
     # entity spawning
-    playerlist = pygame.sprite.Group()
+    playerlist = pygame.sprite.GroupSingle()
     enemylist = pygame.sprite.Group()
     boostlist = pygame.sprite.Group()
 
@@ -61,7 +63,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         # entity updating
         # entity's in playerlist updater
         for i in playerlist:
-            i.update(screen, )
+            i.update(screen)
             if i.health == 0:
                 i.kill()
         # entity's in enemylist updater
@@ -70,8 +72,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
             if i.health == 0:
                 i.kill()
         # entity's in boostlist updater
-        for i in boostlist:
-            i.update(screen)
+        boostlist.update(screen)
 
         # collision handler
         for i in playerlist:
@@ -80,7 +81,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
 
             # enemy collision handling
             if collidingenemysprite is not None:
-                i.health -= 10
+                collidingenemysprite.attack(i)
                 collidingenemysprite.kill()
 
             # boost handling collision
