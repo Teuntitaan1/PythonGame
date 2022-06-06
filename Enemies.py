@@ -20,7 +20,6 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
         self.font = font
         # health, needs to be present on every entity
         self.health = 10
-        self.healthbegin = self.health
         # width and height variables for scaling the image
         self.height = img.get_height()
         self.width = img.get_width()
@@ -42,22 +41,29 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
 
     def followplayer(self, entitylist):
 
-        # determining offset
+        # simple check to see if there are players left
+        playercount = 0
         for i in entitylist:
             if i.tag == "Player":
-                xoffset = self.x - i.x
-                yoffset = self.y - i.y
-                break
-        # moving accordingly
-        if returnpositive(xoffset) > returnpositive(yoffset):
-            if xoffset < 0:
-                self.x += self.movementspeed
-            if xoffset > 0:
-                self.x -= self.movementspeed
-        else:
-            if yoffset < 0:
-                self.y += self.movementspeed
-            if yoffset > 0:
-                self.y -= self.movementspeed
+                playercount += 1
+
+        if playercount != 0:
+            # determining offset
+            for i in entitylist:
+                if i.tag == "Player":
+                    xoffset = self.x - i.x
+                    yoffset = self.y - i.y
+                    break
+            # moving accordingly
+            if returnpositive(xoffset) > returnpositive(yoffset):
+                if xoffset < 0:
+                    self.x += self.movementspeed
+                if xoffset > 0:
+                    self.x -= self.movementspeed
+            else:
+                if yoffset < 0:
+                    self.y += self.movementspeed
+                if yoffset > 0:
+                    self.y -= self.movementspeed
     def updaterect(self):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])

@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         # collisionbox
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
 
-    def update(self, screen, entitylist):
+    def update(self, screen):
 
         # update statements
         self.updaterect()
