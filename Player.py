@@ -15,11 +15,11 @@ class Player(pygame.sprite.Sprite):
         # positioning
         self.x = x
         self.y = y
-        self.rect = img.get_rect()
         # health indicator font
         self.font = font
         # health, needs to be present on every entity
         self.health = 150
+        self.healthbegin = self.health
         # width and height variables for scaling the image
         self.height = img.get_height()
         self.width = img.get_width()
@@ -28,9 +28,13 @@ class Player(pygame.sprite.Sprite):
         self.maxmovementspeed = maxmovementspeed
         self.currentmovementspeed = movementspeed
 
-    def update(self, screen):
+        # collisionbox
+        self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
+
+    def update(self, screen, entitylist):
 
         # update statements
+        self.updaterect()
         self.handlekeys()
         screen.blit(self.image, [self.x, self.y])
 
@@ -57,7 +61,13 @@ class Player(pygame.sprite.Sprite):
         if key[pygame.K_RIGHT]:
             self.x += self.currentmovementspeed
 
+        if key[pygame.K_MINUS]:
+            self.health -= 1
+
     # simple gradiant producer from green to red to indicate how close the player is to dying
     def handletextcolor(self):
-        return 150 - self.health, 0 + self.health, 0
+        return self.healthbegin - self.health, 0 + self.health, 0
+
+    def updaterect(self):
+        self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
 

@@ -1,8 +1,11 @@
 # Import statements
+import pygame.sprite
+
 import Colors
 from Imports import *
 from Player import Player
 from Photos import Photos
+from Enemies import SimpleFollowEnemy
 
 
 def gameloop(windowsizex, windowsizey, refreshrate):
@@ -24,6 +27,12 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         print("Generated player" + str(i))
         entitylist.add(player)
 
+    for i in range(1):
+        enemy = SimpleFollowEnemy(pygame.transform.scale(Photos["RedPlayer.png"], [60, 60]), "Enemy"+str(i), "Enemy", random.randint(40, 800), random.randint(40, 800), font, random.randint(1,3))
+        print("Generated enemy" + str(i))
+        entitylist.add(enemy)
+
+
     print("Starting game")
 
     # main loop
@@ -41,11 +50,15 @@ def gameloop(windowsizex, windowsizey, refreshrate):
 
         # screen reset
         screen.fill(Colors.black)
-        # player update
+        # entity updating
         for i in entitylist:
-            i.update(screen)
+            i.update(screen, entitylist)
             if i.health == 0:
                 i.kill()
+
+            print(pygame.sprite.spritecollide(i, entitylist, False))
+
+
 
         # screen update
         clock.tick(refreshrate)
