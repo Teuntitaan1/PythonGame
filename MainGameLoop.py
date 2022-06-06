@@ -1,6 +1,4 @@
 # Import statements
-import pygame
-
 import Colors
 from Imports import *
 from Player import Player
@@ -16,15 +14,15 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode(windowsize)
     refreshrate = refreshrate
-    font = pygame.font.SysFont("Vera", 72)
+    font = pygame.font.SysFont("Vera", 40)
 
     # entity spawning
-    entitylist = []
+    entitylist = pygame.sprite.Group()
 
-    for i in range(9):
-        player = Player(Photos["BluePlayer.png"], "Player"+str(i), "Player", random.randint(40, 800), random.randint(40, 800), font, 3)
+    for i in range(1):
+        player = Player(pygame.transform.scale(Photos["BluePlayer.png"], [60, 60]), "Player"+str(i), "Player", random.randint(40, 800), random.randint(40, 800), font, 3, 6)
         print("Generated player" + str(i))
-        entitylist.append(player)
+        entitylist.add(player)
 
     print("Starting game")
 
@@ -46,6 +44,8 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         # player update
         for i in entitylist:
             i.update(screen)
+            if i.health == 0:
+                i.kill()
 
         # screen update
         clock.tick(refreshrate)
