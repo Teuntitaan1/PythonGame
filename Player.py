@@ -1,4 +1,3 @@
-import Colors
 from Imports import *
 
 
@@ -10,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         self.image = img
         # kind of useless right now
         self.name = name
-        # tag for the collision manager to detirmine what to do
+        # tag for the collision manager to determine what to do
         self.tag = tag
         # positioning
         self.x = x
@@ -70,4 +69,3 @@ class Player(pygame.sprite.Sprite):
 
     def updaterect(self):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
-

@@ -1,11 +1,11 @@
 # Import statements
-import pygame.sprite
-
 import Colors
 from Imports import *
 from Player import Player
 from Photos import Photos
 from Enemies import SimpleFollowEnemy
+from Boosts import HealthBoost
+
 
 def gameloop(windowsizex, windowsizey, refreshrate):
     pygame.init()
@@ -21,8 +21,9 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     # entity spawning
     playerlist = pygame.sprite.Group()
     enemylist = pygame.sprite.Group()
+    boostlist = pygame.sprite.Group()
 
-    for i in range(15):
+    for i in range(4):
         enemy = SimpleFollowEnemy(pygame.transform.scale(Photos["RedPlayer.png"], [60, 60]), "Enemy" + str(i), "Enemy",
                                   random.randint(40, 800), random.randint(40, 800), font, random.randint(1, 3))
         print("Generated enemy" + str(i))
@@ -34,8 +35,11 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         print("Generated player" + str(i))
         playerlist.add(player)
 
-
-
+    for i in range(5):
+        boost = HealthBoost(pygame.transform.scale(Photos["GreenPlayer.png"], [60, 60]), "Boost" + str(i), "Boost",
+                            random.randint(40, 800), random.randint(40, 800))
+        print("Generated player" + str(i))
+        boostlist.add(boost)
 
     print("Starting game")
 
@@ -55,27 +59,35 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         # screen reset
         screen.fill(Colors.black)
         # entity updating
+        # entity's in playerlist updater
         for i in playerlist:
             i.update(screen, )
             if i.health == 0:
                 i.kill()
+        # entity's in enemylist updater
         for i in enemylist:
             i.update(screen, playerlist)
             if i.health == 0:
                 i.kill()
+        # entity's in boostlist updater
+        for i in boostlist:
+            i.update(screen)
 
         # collision handler
         for i in playerlist:
+
             collidingenemysprite = pygame.sprite.spritecollideany(i, enemylist)
+
+            # enemy collision handling
             if collidingenemysprite is not None:
                 i.health -= 10
                 collidingenemysprite.kill()
 
-
-
-
-
-
+            # boost handling collision
+            collidingboostsprite = pygame.sprite.spritecollideany(i, boostlist)
+            if collidingboostsprite is not None:
+                collidingboostsprite.boost(i)
+                collidingboostsprite.kill()
 
         # screen update
         clock.tick(refreshrate)
