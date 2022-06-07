@@ -69,5 +69,6 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
     def updaterect(self):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
 
-    def attack(self, towhat):
+    @staticmethod
+    def attack(towhat):
         towhat.health -= 10

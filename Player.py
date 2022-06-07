@@ -1,3 +1,4 @@
+import Colors
 from Imports import *
 
 
@@ -38,8 +39,17 @@ class Player(pygame.sprite.Sprite):
         screen.blit(self.image, [self.x, self.y])
 
         # health indicator rendering
-        text = self.font.render(str(self.health), True, self.handletextcolor())
-        screen.blit(text, [self.x, self.y - (self.height/2.5)])
+        if self.calculateextrahealth() > 0:
+            # if health is above the beginhealth(150 in this case)
+            healthindicatortext = self.font.render(str(150), True, self.handletextcolor())
+            screen.blit(healthindicatortext, [self.x, self.y - (self.height / 2.5)])
+            # like the yellow hearts in minecraft
+            extrahealthindicatortext = self.font.render(str(self.calculateextrahealth()), True, Colors.orange)
+            screen.blit(extrahealthindicatortext, [self.x, self.y - ((self.height / 2.5)*2)])
+        else:
+            # if health is below or equal to the beginhealth(150 in this case)
+            healthindicatortext = self.font.render(str(self.health), True, self.handletextcolor())
+            screen.blit(healthindicatortext, [self.x, self.y - (self.height / 2.5)])
 
     def handlekeys(self):
 
@@ -60,12 +70,24 @@ class Player(pygame.sprite.Sprite):
         if key[pygame.K_RIGHT]:
             self.x += self.currentmovementspeed
 
-        if key[pygame.K_MINUS]:
+        # debugging health indicator
+        if key[pygame.K_W]:
             self.health -= 1
+        if key[pygame.K_S]:
+            self.health += 1
 
     # simple gradiant producer from green to red to indicate how close the player is to dying
     def handletextcolor(self):
-        return self.healthbegin - self.health, 0 + self.health, 0
+        if self.calculateextrahealth() > 0:
+            return 0, 150, 0
+        else:
+            return self.healthbegin - self.health, 0 + self.health, 0
 
     def updaterect(self):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
+
+    def calculateextrahealth(self):
+        if self.health - self.healthbegin > 0:
+            return self.health - self.healthbegin
+        else:
+            return 0

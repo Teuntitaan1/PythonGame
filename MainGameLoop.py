@@ -25,9 +25,9 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     enemylist = pygame.sprite.Group()
     boostlist = pygame.sprite.Group()
     # Todo add a bullet spawning mechanic(this bullet needs to have speed
-    bulletlist = pygame.sprite.Group()
+    # bulletlist = pygame.sprite.Group()
 
-    for i in range(4):
+    for i in range(1):
         enemy = SimpleFollowEnemy(pygame.transform.scale(Photos["RedPlayer.png"].convert(), [60, 60]), "Enemy" + str(i), "Enemy",
                                   random.randint(40, 800), random.randint(40, 800), font, random.randint(1, 3))
         print("Generated enemy" + str(i))
@@ -39,7 +39,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         print("Generated player" + str(i))
         playerlist.add(player)
 
-    for i in range(5):
+    for i in range(1):
         boost = HealthBoost(pygame.transform.scale(Photos["GreenPlayer.png"].convert(), [60, 60]), "Boost" + str(i), "Boost",
                             random.randint(40, 800), random.randint(40, 800))
         print("Generated player" + str(i))

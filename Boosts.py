@@ -30,5 +30,4 @@ class HealthBoost(pygame.sprite.Sprite):
 
     @staticmethod
     def boost(towhat):
-        if towhat.health < towhat.healthbegin:
-            towhat.health += 10
+        towhat.health += 10

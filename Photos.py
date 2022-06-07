@@ -11,4 +11,3 @@ for i in PhotosDir:
         Photos[i] = pygame.image.load("Photos" + "\\" + i)
 
 print("loaded all photos")
-
