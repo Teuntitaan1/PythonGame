@@ -86,6 +86,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
 
             # boost handling collision
             collidingboostsprite = pygame.sprite.spritecollideany(i, boostlist)
+
             if collidingboostsprite is not None:
                 collidingboostsprite.boost(i)
                 collidingboostsprite.kill()

@@ -11,3 +11,4 @@ for i in PhotosDir:
         Photos[i] = pygame.image.load("Photos" + "\\" + i).convert()
 
 print("loaded all photos")
+

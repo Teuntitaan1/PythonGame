@@ -39,17 +39,17 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
         text = self.font.render(str(self.health), True, Colors.white)
         screen.blit(text, [self.x, self.y - (self.height/2.5)])
 
-    def followplayer(self, entitylist):
+    def followplayer(self, playerlist):
 
         # simple check to see if there are players left
         playercount = 0
-        for i in entitylist:
+        for i in playerlist:
             if i.tag == "Player":
                 playercount += 1
 
         if playercount != 0:
             # determining offset
-            for i in entitylist:
+            for i in playerlist:
                 if i.tag == "Player":
                     xoffset = self.x - i.x
                     yoffset = self.y - i.y
