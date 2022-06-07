@@ -71,9 +71,9 @@ class Player(pygame.sprite.Sprite):
             self.x += self.currentmovementspeed
 
         # debugging health indicator
-        if key[pygame.K_W]:
+        if key[pygame.K_w]:
             self.health -= 1
-        if key[pygame.K_S]:
+        if key[pygame.K_s]:
             self.health += 1
 
     # simple gradiant producer from green to red to indicate how close the player is to dying
