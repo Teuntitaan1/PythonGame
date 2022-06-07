@@ -24,21 +24,23 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     playerlist = pygame.sprite.GroupSingle()
     enemylist = pygame.sprite.Group()
     boostlist = pygame.sprite.Group()
+    # Todo add a bullet spawning mechanic(this bullet needs to have speed
+    bulletlist = pygame.sprite.Group()
 
     for i in range(4):
-        enemy = SimpleFollowEnemy(pygame.transform.scale(Photos["RedPlayer.png"], [60, 60]), "Enemy" + str(i), "Enemy",
+        enemy = SimpleFollowEnemy(pygame.transform.scale(Photos["RedPlayer.png"].convert(), [60, 60]), "Enemy" + str(i), "Enemy",
                                   random.randint(40, 800), random.randint(40, 800), font, random.randint(1, 3))
         print("Generated enemy" + str(i))
         enemylist.add(enemy)
 
     for i in range(1):
-        player = Player(pygame.transform.scale(Photos["BluePlayer.png"], [60, 60]), "Player" + str(i), "Player",
+        player = Player(pygame.transform.scale(Photos["BluePlayer.png"].convert(), [60, 60]), "Player" + str(i), "Player",
                         random.randint(40, 800), random.randint(40, 800), font, 3, 6)
         print("Generated player" + str(i))
         playerlist.add(player)
 
     for i in range(5):
-        boost = HealthBoost(pygame.transform.scale(Photos["GreenPlayer.png"], [60, 60]), "Boost" + str(i), "Boost",
+        boost = HealthBoost(pygame.transform.scale(Photos["GreenPlayer.png"].convert(), [60, 60]), "Boost" + str(i), "Boost",
                             random.randint(40, 800), random.randint(40, 800))
         print("Generated player" + str(i))
         boostlist.add(boost)
