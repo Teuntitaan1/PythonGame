@@ -8,6 +8,6 @@ for i in PhotosDir:
     extension = os.path.splitext(i)
     if extension[1] == '.png':
         print("Found " + i + " in directory")
-        Photos[i] = pygame.image.load("Photos" + "\\" + i)
+        Photos[i] = pygame.image.load("Photos" + "\\" + i).convert()
 
 print("loaded all photos")
