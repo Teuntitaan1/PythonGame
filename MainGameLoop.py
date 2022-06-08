@@ -1,12 +1,11 @@
 # Import statements
-import pygame.sprite
 
 import Colors
 from Imports import *
 from Player import Player
-from Photos import Photos
+
 from Enemies import SimpleFollowEnemy
-from Boosts import HealthBoost
+from Boosts import HealthBoost, SpeedBoost
 
 
 def gameloop(windowsizex, windowsizey, refreshrate):
@@ -28,21 +27,22 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     # bulletlist = pygame.sprite.Group()
 
     for i in range(0):
-        enemy = SimpleFollowEnemy(pygame.transform.scale(Photos["RedPlayer.png"].convert(), [60, 60]), "Enemy" + str(i), "Enemy",
-                                  random.randint(40, 800), random.randint(40, 800), font, random.randint(1, 3))
+        enemy = SimpleFollowEnemy("SimpleFollowEnemy" + str(i), "Enemy", random.randint(40, 800), random.randint(40, 800), font, random.randint(1, 3))
         print("Generated enemy" + str(i))
         enemylist.add(enemy)
 
     for i in range(1):
-        player = Player(pygame.transform.scale(Photos["BluePlayer.png"].convert(), [60, 60]), "Player" + str(i), "Player",
-                        random.randint(40, 800), random.randint(40, 800), font, 3, 6)
+        player = Player("Player" + str(i), "Player", random.randint(40, 800), random.randint(40, 800), font, 3, 6)
         print("Generated player" + str(i))
         playerlist.add(player)
 
-    for i in range(0):
-        boost = HealthBoost(pygame.transform.scale(Photos["GreenPlayer.png"].convert(), [60, 60]), "Boost" + str(i), "Boost",
-                            random.randint(40, 800), random.randint(40, 800))
-        print("Generated player" + str(i))
+    for i in range(1):
+        boost = HealthBoost("HealthBoost" + str(i), "Boost", random.randint(40, 800), random.randint(40, 800))
+        print("Generated Healthboost" + str(i))
+        boostlist.add(boost)
+    for i in range(10):
+        boost = SpeedBoost("SpeedBoost" + str(i), "Boost", random.randint(40, 800), random.randint(40, 800))
+        print("Generated Speedboost" + str(i))
         boostlist.add(boost)
 
     print("Starting game")

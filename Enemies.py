@@ -4,11 +4,10 @@ from Imports import *
 
 
 class SimpleFollowEnemy(pygame.sprite.Sprite):
-    def __init__(self, img, name, tag, x, y, font, movementspeed):
+    def __init__(self, name, tag, x, y, font, movementspeed):
 
         super().__init__()
         # the sprite to be rendered
-        self.image = img
         # kind of useless right now
         self.name = name
         # tag for the collision manager to determine what to do
@@ -21,8 +20,8 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
         # health, needs to be present on every entity
         self.health = 10
         # width and height variables for scaling the image
-        self.height = img.get_height()
-        self.width = img.get_width()
+        self.height = 80
+        self.width = 80
         # movementspeed regulators
         self.movementspeed = movementspeed
         # collisionbox
@@ -33,7 +32,7 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
         # update statements
         self.updaterect()
         self.followplayer(entitylist)
-        screen.blit(self.image, [self.x, self.y])
+        pygame.draw.rect(screen, Colors.red, self.rect)
 
         # health indicator rendering
         text = self.font.render(str(self.health), True, Colors.white)
