@@ -27,11 +27,12 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
         # collisionbox
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
 
-    def update(self, screen, entitylist):
+    def update(self, screen, playerlist):
 
         # update statements
+        self.checkhealth()
         self.updaterect()
-        self.followplayer(entitylist)
+        self.followplayer(playerlist)
         pygame.draw.rect(screen, Colors.red, self.rect)
 
         # health indicator rendering
@@ -67,6 +68,10 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
 
     def updaterect(self):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
+
+    def checkhealth(self):
+        if self.health == 0:
+            self.kill()
 
     @staticmethod
     def attack(towhat):

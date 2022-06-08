@@ -4,7 +4,7 @@ from Imports import *
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, name, tag, x, y, font, movementspeed, maxmovementspeed):
+    def __init__(self, name, tag, x, y, font, movementspeed):
 
         super().__init__()
         # the sprite to be rendered
@@ -26,8 +26,6 @@ class Player(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         # movementspeed regulators
         self.movementspeed = movementspeed
-        self.maxmovementspeed = maxmovementspeed
-        self.currentmovementspeed = movementspeed
 
         # collisionbox
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
@@ -35,6 +33,7 @@ class Player(pygame.sprite.Sprite):
     def update(self, screen):
 
         # update statements
+        self.checkhealth()
         self.updaterect()
         self.handlekeys()
         screen.blit(self.image, [self.x, self.y])
@@ -56,23 +55,17 @@ class Player(pygame.sprite.Sprite):
 
         key = pygame.key.get_pressed()
 
-        # sprinting mechanic, changes the current movementspeed, can also be boosted by powerups
-        if key[pygame.K_LSHIFT]:
-            self.currentmovementspeed = self.maxmovementspeed
-        else:
-            self.currentmovementspeed = self.movementspeed
-
         if key[pygame.K_UP]:
-            self.y -= self.currentmovementspeed
+            self.y -= self.movementspeed
         elif key[pygame.K_DOWN]:
-            self.y += self.currentmovementspeed
+            self.y += self.movementspeed
 
         if key[pygame.K_LEFT]:
             self.image = Photos["PlayerSpriteLeft.png"].convert()
-            self.x -= self.currentmovementspeed
+            self.x -= self.movementspeed
         elif key[pygame.K_RIGHT]:
             self.image = Photos["PlayerSpriteRight.png"].convert()
-            self.x += self.currentmovementspeed
+            self.x += self.movementspeed
 
         # debugging health indicator
         if key[pygame.K_w]:
@@ -95,3 +88,7 @@ class Player(pygame.sprite.Sprite):
             return self.health - self.healthbegin
         else:
             return 0
+
+    def checkhealth(self):
+        if self.health == 0:
+            self.kill()

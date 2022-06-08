@@ -26,13 +26,13 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     # Todo add a bullet spawning mechanic(this bullet needs to have speed
     # bulletlist = pygame.sprite.Group()
 
-    for i in range(0):
+    for i in range(3):
         enemy = SimpleFollowEnemy("SimpleFollowEnemy" + str(i), "Enemy", random.randint(40, 800), random.randint(40, 800), font, random.randint(1, 3))
         print("Generated enemy" + str(i))
         enemylist.add(enemy)
 
     for i in range(1):
-        player = Player("Player" + str(i), "Player", random.randint(40, 800), random.randint(40, 800), font, 3, 6)
+        player = Player("Player" + str(i), "Player", random.randint(40, 800), random.randint(40, 800), font, 3)
         print("Generated player" + str(i))
         playerlist.add(player)
 
@@ -40,7 +40,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         boost = HealthBoost("HealthBoost" + str(i), "Boost", random.randint(40, 800), random.randint(40, 800))
         print("Generated Healthboost" + str(i))
         boostlist.add(boost)
-    for i in range(10):
+    for i in range(2):
         boost = SpeedBoost("SpeedBoost" + str(i), "Boost", random.randint(40, 800), random.randint(40, 800))
         print("Generated Speedboost" + str(i))
         boostlist.add(boost)
@@ -64,15 +64,9 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         screen.fill(Colors.black)
         # entity updating
         # entity's in playerlist updater
-        for i in playerlist:
-            i.update(screen)
-            if i.health == 0:
-                i.kill()
+        playerlist.update(screen)
         # entity's in enemylist updater
-        for i in enemylist:
-            i.update(screen, playerlist)
-            if i.health == 0:
-                i.kill()
+        enemylist.update(screen, playerlist)
         # entity's in boostlist updater
         boostlist.update(screen)
 
