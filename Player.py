@@ -1,6 +1,7 @@
 import Colors
 from Photos import Photos
 from Imports import *
+from Bullet import SmallBullet
 
 
 class Player(pygame.sprite.Sprite):
@@ -26,16 +27,19 @@ class Player(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         # movementspeed regulators
         self.movementspeed = movementspeed
-
+        self.bulletmovementspeedupgrade = 0
         # collisionbox
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
 
-    def update(self, screen):
+        # direction
+        self.direction = "right"
+
+    def update(self, screen, bulletlist):
 
         # update statements
         self.checkhealth()
         self.updaterect()
-        self.handlekeys()
+        self.handlekeys(bulletlist)
         screen.blit(self.image, [self.x, self.y])
 
         # health indicator rendering
@@ -51,21 +55,28 @@ class Player(pygame.sprite.Sprite):
             healthindicatortext = self.font.render(str(self.health), True, self.handletextcolor())
             screen.blit(healthindicatortext, [self.x, self.y - (self.height / 2.5)])
 
-    def handlekeys(self):
+    def handlekeys(self, bulletlist):
 
         key = pygame.key.get_pressed()
 
         if key[pygame.K_UP]:
             self.y -= self.movementspeed
+            self.direction = "up"
         elif key[pygame.K_DOWN]:
             self.y += self.movementspeed
+            self.direction = "down"
 
         if key[pygame.K_LEFT]:
             self.image = Photos["PlayerSpriteLeft.png"].convert()
             self.x -= self.movementspeed
+            self.direction = "left"
         elif key[pygame.K_RIGHT]:
             self.image = Photos["PlayerSpriteRight.png"].convert()
             self.x += self.movementspeed
+            self.direction = "right"
+
+        if key[pygame.K_SPACE]:
+            self.shootsmallbullet(bulletlist)
 
         # debugging health indicator
         if key[pygame.K_w]:
@@ -92,3 +103,8 @@ class Player(pygame.sprite.Sprite):
     def checkhealth(self):
         if self.health == 0:
             self.kill()
+
+    def shootsmallbullet(self, bulletlist):
+        bulletname = "Bullet" + str(len(bulletlist)+1)
+
+        bulletlist.add(SmallBullet(bulletname, "bullet", self.x, self.y, 7 + self.bulletmovementspeedupgrade, self.direction))

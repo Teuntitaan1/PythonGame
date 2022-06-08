@@ -18,13 +18,11 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     screen = pygame.display.set_mode(windowsize)
     refreshrate = refreshrate
     font = pygame.font.SysFont("Vera", 40)
-
     # entity spawning
     playerlist = pygame.sprite.GroupSingle()
     enemylist = pygame.sprite.Group()
     boostlist = pygame.sprite.Group()
-    # Todo add a bullet spawning mechanic(this bullet needs to have speed
-    # bulletlist = pygame.sprite.Group()
+    bulletlist = pygame.sprite.Group()
 
     for i in range(3):
         enemy = SimpleFollowEnemy("SimpleFollowEnemy" + str(i), "Enemy", random.randint(40, 800), random.randint(40, 800), font, random.randint(1, 3))
@@ -64,13 +62,14 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         screen.fill(Colors.black)
         # entity updating
         # entity's in playerlist updater
-        playerlist.update(screen)
+        playerlist.update(screen, bulletlist)
         # entity's in enemylist updater
         enemylist.update(screen, playerlist)
         # entity's in boostlist updater
         boostlist.update(screen)
-
-        # collision handler
+        # entity's in bulletlist updater
+        bulletlist.update(screen)
+        # player collision handler
         for i in playerlist:
 
             collidingenemysprite = pygame.sprite.spritecollideany(i, enemylist)
@@ -86,6 +85,16 @@ def gameloop(windowsizex, windowsizey, refreshrate):
             if collidingboostsprite is not None:
                 collidingboostsprite.boost(i)
                 collidingboostsprite.kill()
+
+        # bullet collision handler
+        for i in bulletlist:
+
+            collidingenemysprite = pygame.sprite.spritecollideany(i, enemylist)
+
+            # enemy collision handling
+            if collidingenemysprite is not None:
+                i.attack(collidingenemysprite)
+                i.kill()
 
         # screen update
         clock.tick(refreshrate)
