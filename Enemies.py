@@ -70,7 +70,7 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
 
     def checkhealth(self):
-        if self.health == 0:
+        if self.health == 0 or self.health < 0:
             self.kill()
 
     @staticmethod

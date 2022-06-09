@@ -18,6 +18,10 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     screen = pygame.display.set_mode(windowsize)
     refreshrate = refreshrate
     font = pygame.font.SysFont("Vera", 40)
+
+    # variables
+    framecounter = 0
+
     # entity spawning
     playerlist = pygame.sprite.GroupSingle()
     enemylist = pygame.sprite.Group()
@@ -61,14 +65,18 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         # screen reset
         screen.fill(Colors.black)
         # entity updating
+
         # entity's in playerlist updater
-        playerlist.update(screen, bulletlist)
+        playerlist.update(bulletlist, framecounter)
         # entity's in enemylist updater
         enemylist.update(screen, playerlist)
         # entity's in boostlist updater
         boostlist.update(screen)
         # entity's in bulletlist updater
         bulletlist.update(screen)
+        # to render the player above the bullet(looks better)
+        for i in playerlist:
+            i.draw(screen)
         # player collision handler
         for i in playerlist:
 
@@ -99,3 +107,4 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         # screen update
         clock.tick(refreshrate)
         pygame.display.update()
+        framecounter += 1

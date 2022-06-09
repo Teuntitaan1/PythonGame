@@ -42,6 +42,18 @@ class SmallBullet(pygame.sprite.Sprite):
             self.x -= self.movementspeed
         elif self.direction == "right":
             self.x += self.movementspeed
+        elif self.direction == "leftup":
+            self.y -= self.movementspeed
+            self.x -= self.movementspeed
+        elif self.direction == "rightup":
+            self.y -= self.movementspeed
+            self.x += self.movementspeed
+        elif self.direction == "leftdown":
+            self.y += self.movementspeed
+            self.x -= self.movementspeed
+        elif self.direction == "rightdown":
+            self.y += self.movementspeed
+            self.x += self.movementspeed
 
         self.updaterect()
 
