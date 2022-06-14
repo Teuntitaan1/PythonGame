@@ -1,5 +1,3 @@
-from line_profiler_pycharm import profile
-
 import Colors
 from Photos import Photos
 from Imports import *
@@ -7,7 +5,7 @@ from Bullet import SmallBullet
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, name, tag, x, y, font, movementspeed):
+    def __init__(self, name, tag, x, y, font):
 
         super().__init__()
         # the sprite to be rendered
@@ -28,7 +26,7 @@ class Player(pygame.sprite.Sprite):
         self.height = self.image.get_height()
         self.width = self.image.get_width()
         # movementspeed regulators
-        self.movementspeed = movementspeed
+        self.movementspeed = 3
         self.bulletmovementspeedupgrade = 0
         # collisionbox
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
@@ -47,7 +45,6 @@ class Player(pygame.sprite.Sprite):
         self.updaterect()
         self.handlekeys(bulletlist, framecounter)
 
-    @profile
     def handlekeys(self, bulletlist, framecounter):
 
         key = pygame.key.get_pressed()

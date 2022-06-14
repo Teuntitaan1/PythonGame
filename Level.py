@@ -1,11 +1,10 @@
 from Imports import *
-from Player import Player
 from Enemies import SimpleFollowEnemy
 from Boosts import HealthBoost, SpeedBoost
 
 
 class Level:
-    def __init__(self, amountofenemies, numberofpowerups, levelnumber, font):
+    def __init__(self, amountofenemies, numberofpowerups, levelnumber, font, player):
 
         # entity spawning
         self.playerlist = pygame.sprite.GroupSingle()
@@ -19,8 +18,6 @@ class Level:
             print("Generated enemy" + str(i))
             self.enemylist.add(enemy)
 
-        player = Player("Player0", "Player", random.randint(40, 800), random.randint(40, 800), font, 3)
-        print("Player has been generated")
         self.playerlist.add(player)
 
         for i in range(numberofpowerups):
@@ -34,7 +31,7 @@ class Level:
                 print("Generated Speedboost" + str(i))
                 self.boostlist.add(boost)
 
-        print("Level number " + levelnumber + " has been generated.")
+        print("Level number " + str(levelnumber) + " has been generated.")
 
     def update(self, screen, framecounter):
 
