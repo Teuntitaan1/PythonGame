@@ -61,7 +61,6 @@ class Player(pygame.sprite.Sprite):
             self.direction = "left"
             self.image = Photos["PlayerSpriteLeft.png"].convert()
 
-
         elif key[pygame.K_RIGHT]:
             self.currentaction = "right"
             self.direction = "right"
@@ -77,7 +76,6 @@ class Player(pygame.sprite.Sprite):
             self.image = Photos["PlayerSpriteDown.png"].convert()
         elif key[pygame.K_SPACE]:
             self.currentaction = "shoot"
-
 
     def handleactions(self, bulletlist, framecounter):
 
@@ -95,7 +93,7 @@ class Player(pygame.sprite.Sprite):
             if self.canshoot(framecounter):
                 self.shootsmallbullet(bulletlist)
                 self.framelastshot = framecounter
-                self.currentaction = None
+        self.currentaction = None
 
     # simple gradiant producer from green to red to indicate how close the player is to dying
     def handletextcolor(self):

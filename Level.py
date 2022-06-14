@@ -13,8 +13,7 @@ class Level:
         self.bulletlist = pygame.sprite.Group()
 
         for i in range(amountofenemies):
-            enemy = SimpleFollowEnemy("SimpleFollowEnemy" + str(i), "Enemy", random.randint(40, 760), random.randint(40, 760)
-                                      , font, random.randint(1, 3))
+            enemy = SimpleFollowEnemy("SimpleFollowEnemy" + str(i), "Enemy", 400, 400, font, random.randint(1, 3))
             print("Generated enemy" + str(i))
             self.enemylist.add(enemy)
 
