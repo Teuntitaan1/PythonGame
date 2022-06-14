@@ -28,7 +28,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
 
 
     for i in range(60):
-        level = Level(random.randint(0, 7), random.randint(0, 7), i, font, player)
+        level = Level(random.randint(0, 0), random.randint(0, 0), i, font, player)
         levellist.append(level)
 
     print("Starting game")
@@ -51,8 +51,8 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         screen.fill(black)
         levellist[currentlevel].update(screen, framecounter)
 
-        if len(levellist[currentlevel].enemylist) == 0:
-            currentlevel += 1
+        #if len(levellist[currentlevel].enemylist) == 0:
+        #   currentlevel += 1
 
         # screen update
         clock.tick(refreshrate)

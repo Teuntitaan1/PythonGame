@@ -26,88 +26,76 @@ class Player(pygame.sprite.Sprite):
         self.height = self.image.get_height()
         self.width = self.image.get_width()
         # movementspeed regulators
-        self.movementspeed = 3
+        self.movementspeed = self.width
         self.bulletmovementspeedupgrade = 0
         # collisionbox
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
-
         # shooting shit
         self.framelastshot = 0
         self.shootdelay = 100
+        # ticking system fucking shit shit
+        self.lasttick = 0
+        self.tickspeed = 50
 
         # direction
         self.direction = "right"
+        self.currentaction = None
 
     def update(self, bulletlist, framecounter):
 
         # update statements
         self.checkhealth()
         self.updaterect()
-        self.handlekeys(bulletlist, framecounter)
+        self.handlekeys()
+        if framecounter - self.lasttick > self.tickspeed:
+            self.lasttick = framecounter
+            self.handleactions(bulletlist, framecounter)
 
-    def handlekeys(self, bulletlist, framecounter):
+    def handlekeys(self):
 
         key = pygame.key.get_pressed()
 
         # movement script
-        # what in the holy mother of god have i created TODO fix this fucking shit
         if key[pygame.K_LEFT]:
-            if key[pygame.K_UP]:
-                self.direction = "leftup"
-                self.x -= self.movementspeed
-                self.y -= self.movementspeed
-            elif key[pygame.K_DOWN]:
-                self.direction = "leftdown"
-                self.x -= self.movementspeed
-                self.y += self.movementspeed
-            else:
-                self.direction = "left"
-                self.x -= self.movementspeed
-                self.image = Photos["PlayerSpriteLeft.png"].convert()
-        elif key[pygame.K_RIGHT]:
-            if key[pygame.K_UP]:
-                self.direction = "rightup"
-                self.x += self.movementspeed
-                self.y -= self.movementspeed
-            elif key[pygame.K_DOWN]:
-                self.direction = "rightdown"
-                self.x += self.movementspeed
-                self.y += self.movementspeed
-            else:
-                self.direction = "right"
-                self.x += self.movementspeed
-                self.image = Photos["PlayerSpriteRight.png"].convert()
-        elif key[pygame.K_UP]:
-            if key[pygame.K_LEFT]:
-                self.direction = "leftup"
-                self.x -= self.movementspeed
-                self.y -= self.movementspeed
-            elif key[pygame.K_RIGHT]:
-                self.direction = "rightup"
-                self.x += self.movementspeed
-                self.y -= self.movementspeed
-            else:
-                self.direction = "up"
-                self.y -= self.movementspeed
-                self.image = Photos["PlayerSpriteUp.png"].convert()
-        elif key[pygame.K_DOWN]:
-            if key[pygame.K_LEFT]:
-                self.direction = "leftdown"
-                self.x -= self.movementspeed
-                self.y += self.movementspeed
-            elif key[pygame.K_RIGHT]:
-                self.direction = "rightdown"
-                self.x += self.movementspeed
-                self.y += self.movementspeed
-            else:
-                self.direction = "down"
-                self.y += self.movementspeed
-                self.image = Photos["PlayerSpriteDown.png"].convert()
+            self.currentaction = "left"
+            self.direction = "left"
+            self.image = Photos["PlayerSpriteLeft.png"].convert()
 
-        if key[pygame.K_SPACE]:
+
+        elif key[pygame.K_RIGHT]:
+            self.currentaction = "right"
+            self.direction = "right"
+            self.image = Photos["PlayerSpriteRight.png"].convert()
+
+        elif key[pygame.K_UP]:
+            self.currentaction = "up"
+            self.direction = "up"
+            self.image = Photos["PlayerSpriteUp.png"].convert()
+        elif key[pygame.K_DOWN]:
+            self.currentaction = "down"
+            self.direction = "down"
+            self.image = Photos["PlayerSpriteDown.png"].convert()
+        elif key[pygame.K_SPACE]:
+            self.currentaction = "shoot"
+
+
+    def handleactions(self, bulletlist, framecounter):
+
+        if self.currentaction == "left":
+            self.x -= self.movementspeed
+        elif self.currentaction == "right":
+            self.x += self.movementspeed
+        elif self.currentaction == "up":
+            self.y -= self.movementspeed
+        elif self.currentaction == "down":
+            self.y += self.movementspeed
+        elif self.currentaction is None:
+            pass
+        elif self.currentaction == "shoot":
             if self.canshoot(framecounter):
                 self.shootsmallbullet(bulletlist)
                 self.framelastshot = framecounter
+                self.currentaction = None
 
     # simple gradiant producer from green to red to indicate how close the player is to dying
     def handletextcolor(self):

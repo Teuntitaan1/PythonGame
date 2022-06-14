@@ -66,6 +66,8 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
                 if yoffset > 0:
                     self.y -= self.movementspeed
 
+
+
     def updaterect(self):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
 

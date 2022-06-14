@@ -25,6 +25,7 @@ class SmallBullet(pygame.sprite.Sprite):
 
         self.direction = direction
 
+    # noinspection PyTypeChecker
     def update(self, screen, enemylist):
 
         if self.x > (screen.get_width()+200) or self.x < -200:
@@ -33,7 +34,7 @@ class SmallBullet(pygame.sprite.Sprite):
         if self.y > (screen.get_height()+200) or self.y < -200:
             self.kill()
 
-        # looks where to go TODO optimize the hell out of this
+        # looks where to go
         if self.direction == "up":
             self.y -= self.movementspeed
         elif self.direction == "down":
@@ -42,19 +43,6 @@ class SmallBullet(pygame.sprite.Sprite):
             self.x -= self.movementspeed
         elif self.direction == "right":
             self.x += self.movementspeed
-        elif self.direction == "leftup":
-            self.y -= self.movementspeed
-            self.x -= self.movementspeed
-        elif self.direction == "rightup":
-            self.y -= self.movementspeed
-            self.x += self.movementspeed
-        elif self.direction == "leftdown":
-            self.y += self.movementspeed
-            self.x -= self.movementspeed
-        elif self.direction == "rightdown":
-            self.y += self.movementspeed
-            self.x += self.movementspeed
-
         self.updaterect()
 
         pygame.draw.rect(screen, Colors.grey, self.rect)
