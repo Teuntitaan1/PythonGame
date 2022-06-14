@@ -28,7 +28,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     boostlist = pygame.sprite.Group()
     bulletlist = pygame.sprite.Group()
 
-    for i in range(3):
+    for i in range(0):
         enemy = SimpleFollowEnemy("SimpleFollowEnemy" + str(i), "Enemy", random.randint(40, 800), random.randint(40, 800), font, random.randint(1, 3))
         print("Generated enemy" + str(i))
         enemylist.add(enemy)
@@ -38,11 +38,11 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         print("Generated player" + str(i))
         playerlist.add(player)
 
-    for i in range(1):
+    for i in range(0):
         boost = HealthBoost("HealthBoost" + str(i), "Boost", random.randint(40, 800), random.randint(40, 800))
         print("Generated Healthboost" + str(i))
         boostlist.add(boost)
-    for i in range(2):
+    for i in range(0):
         boost = SpeedBoost("SpeedBoost" + str(i), "Boost", random.randint(40, 800), random.randint(40, 800))
         print("Generated Speedboost" + str(i))
         boostlist.add(boost)

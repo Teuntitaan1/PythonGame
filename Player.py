@@ -1,3 +1,5 @@
+from line_profiler_pycharm import profile
+
 import Colors
 from Photos import Photos
 from Imports import *
@@ -45,6 +47,7 @@ class Player(pygame.sprite.Sprite):
         self.updaterect()
         self.handlekeys(bulletlist, framecounter)
 
+    @profile
     def handlekeys(self, bulletlist, framecounter):
 
         key = pygame.key.get_pressed()
