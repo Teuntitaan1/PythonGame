@@ -23,7 +23,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     levellist = []
 
     # player generation
-    player = Player("Player0", "Player", random.randint(40, 800), random.randint(40, 800), font)
+    player = Player("Player0", "Player", random.randint(40, 760), random.randint(40, 760), font)
     print("Player has been generated")
 
 

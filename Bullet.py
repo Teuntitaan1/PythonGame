@@ -25,7 +25,7 @@ class SmallBullet(pygame.sprite.Sprite):
 
         self.direction = direction
 
-    def update(self, screen):
+    def update(self, screen, enemylist):
 
         if self.x > (screen.get_width()+200) or self.x < -200:
             self.kill()
@@ -58,6 +58,13 @@ class SmallBullet(pygame.sprite.Sprite):
         self.updaterect()
 
         pygame.draw.rect(screen, Colors.grey, self.rect)
+
+        collidingenemysprite = pygame.sprite.spritecollideany(self, enemylist)
+
+        # enemy collision handling
+        if collidingenemysprite is not None:
+            self.attack(collidingenemysprite)
+            self.kill()
 
     def updaterect(self):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])

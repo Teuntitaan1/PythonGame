@@ -89,6 +89,7 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.direction = "up"
                 self.y -= self.movementspeed
+                self.image = Photos["PlayerSpriteUp.png"].convert()
         elif key[pygame.K_DOWN]:
             if key[pygame.K_LEFT]:
                 self.direction = "leftdown"
@@ -101,6 +102,7 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.direction = "down"
                 self.y += self.movementspeed
+                self.image = Photos["PlayerSpriteDown.png"].convert()
 
         if key[pygame.K_SPACE]:
             if self.canshoot(framecounter):

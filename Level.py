@@ -13,8 +13,8 @@ class Level:
         self.bulletlist = pygame.sprite.Group()
 
         for i in range(amountofenemies):
-            enemy = SimpleFollowEnemy("SimpleFollowEnemy" + str(i), "Enemy", random.randint(40, 800),
-                                      random.randint(40, 800), font, random.randint(1, 3))
+            enemy = SimpleFollowEnemy("SimpleFollowEnemy" + str(i), "Enemy", random.randint(40, 760), random.randint(40, 760)
+                                      , font, random.randint(1, 3))
             print("Generated enemy" + str(i))
             self.enemylist.add(enemy)
 
@@ -23,11 +23,11 @@ class Level:
         for i in range(numberofpowerups):
             which = random.randint(1, 100)
             if which <= 25:
-                boost = HealthBoost("HealthBoost" + str(i), "Boost", random.randint(40, 800), random.randint(40, 800))
+                boost = HealthBoost("HealthBoost" + str(i), "Boost", random.randint(40, 760), random.randint(40, 760))
                 print("Generated Healthboost" + str(i))
                 self.boostlist.add(boost)
             else:
-                boost = SpeedBoost("SpeedBoost" + str(i), "Boost", random.randint(40, 800), random.randint(40, 800))
+                boost = SpeedBoost("SpeedBoost" + str(i), "Boost", random.randint(40, 760), random.randint(40, 760))
                 print("Generated Speedboost" + str(i))
                 self.boostlist.add(boost)
 
@@ -42,7 +42,7 @@ class Level:
         # entity's in boostlist updater
         self.boostlist.update(screen)
         # entity's in bulletlist updater
-        self.bulletlist.update(screen)
+        self.bulletlist.update(screen, self.enemylist)
         # to render the player above the bullet(looks better)
         for i in self.playerlist:
             i.draw(screen)
@@ -63,12 +63,3 @@ class Level:
                 collidingboostsprite.boost(i)
                 collidingboostsprite.kill()
 
-        # bullet collision handler
-        for i in self.bulletlist:
-
-            collidingenemysprite = pygame.sprite.spritecollideany(i, self.enemylist)
-
-            # enemy collision handling
-            if collidingenemysprite is not None:
-                i.attack(collidingenemysprite)
-                i.kill()
