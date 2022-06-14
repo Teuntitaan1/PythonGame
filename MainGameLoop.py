@@ -21,7 +21,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     framecounter = 0
     currentlevel = 0
     levellist = []
-
+    # todo make ticker system
     # player generation
     player = Player("Player0", "Player", random.randint(40, 760), random.randint(40, 760), font)
     print("Player has been generated")
