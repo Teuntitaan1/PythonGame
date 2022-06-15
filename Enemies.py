@@ -4,7 +4,7 @@ from Imports import *
 
 
 class SimpleFollowEnemy(pygame.sprite.Sprite):
-    def __init__(self, name, tag, x, y, font, movementspeed):
+    def __init__(self, name, tag, xycoord, font, movementspeed):
 
         super().__init__()
         # the sprite to be rendered
@@ -13,8 +13,8 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
         # tag for the collision manager to determine what to do
         self.tag = tag
         # positioning
-        self.x = x
-        self.y = y
+        self.x = xycoord["x"]
+        self.y = xycoord["y"]
         # health indicator font
         self.font = font
         # health, needs to be present on every entity

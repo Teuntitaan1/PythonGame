@@ -3,7 +3,7 @@ from Imports import *
 from Level import Level
 from Colors import *
 from Player import Player
-
+from GeneralFunctions import generaterandomarray
 
 
 def gameloop(windowsizex, windowsizey, refreshrate):
@@ -19,17 +19,32 @@ def gameloop(windowsizex, windowsizey, refreshrate):
 
     # variables
     framecounter = 0
-    currentlevel = 0
-    levellist = []
+    currentlevelx = 0
+    currentlevely = 0
+    levelnumber = 1
+    levelwidth, levelheight = 10, 10
+    levellist = [[0 for _ in range(levelwidth)] for _ in range(levelheight)]
+    xrow = 0
+    yrow = 0
+    distancewhenswitchinglevels = 0
+    posarray = generaterandomarray()
+
     # todo make ticker system
     # player generation
-    player = Player("Player0", "Player", random.randint(40, 760), random.randint(40, 760), font)
+    randompos = random.randint(0, len(posarray)-1)
+    player = Player("Player0", "Player", posarray[randompos], font)
+    posarray.pop(randompos)
     print("Player has been generated")
 
-
-    for i in range(60):
-        level = Level(random.randint(0, 0), random.randint(0, 0), i, font, player)
-        levellist.append(level)
+    for i in range(levelheight):
+        for j in range(levelwidth):
+            level = Level(random.randint(0, 0), random.randint(0, 5), levelnumber, font, player, posarray)
+            # noinspection PyTypeChecker
+            levellist[xrow][yrow] = level
+            xrow += 1
+            levelnumber += 1
+        yrow += 1
+        xrow = 0
 
     print("Starting game")
 
@@ -45,14 +60,39 @@ def gameloop(windowsizex, windowsizey, refreshrate):
                 if event.key == pygame.K_ESCAPE:
                     print("Shutting down game")
                     sys.exit()
-
-
-
+        # simply clearing the screen
         screen.fill(black)
-        levellist[currentlevel].update(screen, framecounter)
+        # global level update statement
+        levellist[currentlevelx][currentlevely].update(screen, framecounter)
 
-        #if len(levellist[currentlevel].enemylist) == 0:
-        #   currentlevel += 1
+        # player going right
+        if player.x > screen.get_width():
+            if currentlevelx < levelwidth:
+                currentlevelx += 1
+                player.x = 0 + distancewhenswitchinglevels
+            else:
+                player.x = screen.get_width()
+        # player going left
+        elif player.x < 0:
+            if currentlevelx > 0:
+                currentlevelx -= 1
+                player.x = screen.get_width() - distancewhenswitchinglevels
+            else:
+                player.x = 0
+        # player going up
+        elif player.y > screen.get_height():
+            if currentlevely < levelheight:
+                currentlevely += 1
+                player.y = 0 + distancewhenswitchinglevels
+            else:
+                player.y = screen.get_height()
+        # player going down
+        elif player.y < 0:
+            if currentlevely > levelheight:
+                currentlevely -= 1
+                player.y = screen.get_height() - distancewhenswitchinglevels
+            else:
+                player.y = 0 + distancewhenswitchinglevels
 
         # screen update
         clock.tick(refreshrate)

@@ -5,7 +5,7 @@ from Bullet import SmallBullet
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, name, tag, x, y, font):
+    def __init__(self, name, tag, xycoord, font):
 
         super().__init__()
         # the sprite to be rendered
@@ -15,8 +15,8 @@ class Player(pygame.sprite.Sprite):
         # tag for the collision manager to determine what to do
         self.tag = tag
         # positioning
-        self.x = x
-        self.y = y
+        self.x = xycoord["x"]
+        self.y = xycoord["y"]
         # health indicator font
         self.font = font
         # health, needs to be present on every entity
@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         # movementspeed regulators
         self.movementspeed = self.width
-        self.bulletmovementspeedupgrade = 0
+        self.bulletmovementspeed = 0
         # collisionbox
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
         # shooting shit
@@ -118,7 +118,7 @@ class Player(pygame.sprite.Sprite):
     def shootsmallbullet(self, bulletlist):
         bulletname = "Bullet" + str(len(bulletlist)+1)
 
-        bulletlist.add(SmallBullet(bulletname, "bullet", self.x+self.width/2, self.y+self.height/2, 7 + self.bulletmovementspeedupgrade, self.direction))
+        bulletlist.add(SmallBullet(bulletname, "bullet", self.x+self.width/2, self.y+self.height/2, 7 + self.bulletmovementspeed, self.direction))
 
     def canshoot(self, framecounter):
         if self.framelastshot + self.shootdelay < framecounter:

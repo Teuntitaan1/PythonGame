@@ -4,7 +4,7 @@ from Imports import *
 
 
 class HealthBoost(pygame.sprite.Sprite):
-    def __init__(self, name, tag, x, y):
+    def __init__(self, name, tag, xycoord):
 
         super().__init__()
         # kind of useless right now
@@ -12,11 +12,11 @@ class HealthBoost(pygame.sprite.Sprite):
         # tag for the collision manager to determine what to do
         self.tag = tag
         # positioning
-        self.x = x
-        self.y = y
+        self.x = xycoord["x"]
+        self.y = xycoord["y"]
         # width and height variables for scaling the image
-        self.height = 60
-        self.width = 60
+        self.height = 80
+        self.width = 80
 
         # collisionbox
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
@@ -33,7 +33,7 @@ class HealthBoost(pygame.sprite.Sprite):
 
 
 class SpeedBoost(pygame.sprite.Sprite):
-    def __init__(self, name, tag, x, y):
+    def __init__(self, name, tag, xycoord):
 
         super().__init__()
         # kind of useless right now
@@ -41,11 +41,11 @@ class SpeedBoost(pygame.sprite.Sprite):
         # tag for the collision manager to determine what to do
         self.tag = tag
         # positioning
-        self.x = x
-        self.y = y
+        self.x = xycoord["x"]
+        self.y = xycoord["y"]
         # width and height variables for scaling the image
-        self.height = 60
-        self.width = 60
+        self.height = 80
+        self.width = 80
 
         # collisionbox
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
@@ -59,4 +59,4 @@ class SpeedBoost(pygame.sprite.Sprite):
     @staticmethod
     def boost(towhat):
         if towhat.movementspeed < 6:
-            towhat.movementspeed += 1
+            towhat.bulletmovementspeed += 1
