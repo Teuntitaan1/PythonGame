@@ -1,5 +1,3 @@
-
-
 from Imports import *
 from Enemies import SimpleFollowEnemy
 from Boosts import HealthBoost, SpeedBoost
@@ -17,10 +15,13 @@ class Level:
         self.posarray = posarray.copy()
         # variables
         self.name = "Level" + str(levelnumber)
+        self.lasttick = 0
+        self.tickspeed = 50
+
         for i in range(amountofenemies):
             # generates a random position on the array
             randomnum = random.randint(0, len(self.posarray)-1)
-            enemy = SimpleFollowEnemy("SimpleFollowEnemy" + str(i), "Enemy", self.posarray[randomnum], font, random.randint(1, 3))
+            enemy = SimpleFollowEnemy("SimpleFollowEnemy" + str(i), "Enemy", self.posarray[randomnum], font)
             # removes the position from the available points in the array so that nothing spawns on eachother
             self.posarray.pop(randomnum)
             print("Generated enemy" + str(i))
@@ -48,7 +49,7 @@ class Level:
     def update(self, screen, framecounter):
 
         # entity's in playerlist updater
-        self.playerlist.update(self.bulletlist, framecounter)
+        self.playerlist.update()
         # entity's in enemylist updater
         self.enemylist.update(screen, self.playerlist)
         # entity's in boostlist updater
@@ -58,6 +59,16 @@ class Level:
         # to render the player above the bullet(looks better)
         for i in self.playerlist:
             i.draw(screen)
+        # ticking system
+        if framecounter - self.lasttick > self.tickspeed:
+
+            for i in self.playerlist:
+                i.tick(self.bulletlist, framecounter)
+            for i in self.enemylist:
+                i.tick()
+
+            self.lasttick = framecounter
+
         # player collision handler
         for i in self.playerlist:
 
@@ -74,4 +85,3 @@ class Level:
             if collidingboostsprite is not None:
                 collidingboostsprite.boost(i)
                 collidingboostsprite.kill()
-

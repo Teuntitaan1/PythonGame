@@ -4,7 +4,7 @@ from Imports import *
 
 
 class SimpleFollowEnemy(pygame.sprite.Sprite):
-    def __init__(self, name, tag, xycoord, font, movementspeed):
+    def __init__(self, name, tag, xycoord, font):
 
         super().__init__()
         # the sprite to be rendered
@@ -23,9 +23,11 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
         self.height = 80
         self.width = 80
         # movementspeed regulators
-        self.movementspeed = movementspeed
+        self.movementspeed = self.width
         # collisionbox
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
+        # action caching
+        self.currentaction = None
 
     def update(self, screen, playerlist):
 
@@ -38,6 +40,20 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
         # health indicator rendering
         text = self.font.render(str(self.health), True, Colors.white)
         screen.blit(text, [self.x, self.y - (self.height/2.5)])
+
+    def tick(self):
+
+        if self.currentaction == "left":
+            self.x -= self.movementspeed
+        elif self.currentaction == "right":
+            self.x += self.movementspeed
+        elif self.currentaction == "up":
+            self.y -= self.movementspeed
+        elif self.currentaction == "down":
+            self.y += self.movementspeed
+        elif self.currentaction is None:
+            pass
+        self.currentaction = None
 
     def followplayer(self, playerlist):
 
@@ -56,17 +72,21 @@ class SimpleFollowEnemy(pygame.sprite.Sprite):
                     break
             # moving accordingly
             if returnpositive(xoffset) > returnpositive(yoffset):
+                # right
                 if xoffset < 0:
-                    self.x += self.movementspeed
+                    self.currentaction = "right"
+                # left
                 if xoffset > 0:
-                    self.x -= self.movementspeed
+                    self.currentaction = "left"
             else:
+                # down
                 if yoffset < 0:
-                    self.y += self.movementspeed
+                    self.currentaction = "down"
+                # up
                 if yoffset > 0:
-                    self.y -= self.movementspeed
-
-
+                    self.currentaction = "up"
+        else:
+            self.currentaction = None
 
     def updaterect(self):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])

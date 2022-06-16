@@ -28,8 +28,6 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     yrow = 0
     distancewhenswitchinglevels = 0
     posarray = generaterandomarray()
-
-    # todo make ticker system
     # player generation
     randompos = random.randint(0, len(posarray)-1)
     player = Player("Player0", "Player", posarray[randompos], font)
@@ -38,7 +36,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
 
     for i in range(levelheight):
         for j in range(levelwidth):
-            level = Level(random.randint(0, 0), random.randint(0, 5), levelnumber, font, player, posarray)
+            level = Level(random.randint(0, 1), random.randint(0, 5), levelnumber, font, player, posarray)
             # noinspection PyTypeChecker
             levellist[xrow][yrow] = level
             xrow += 1
@@ -65,6 +63,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         # global level update statement
         levellist[currentlevelx][currentlevely].update(screen, framecounter)
 
+        # map movement logic
         # player going right
         if player.x > screen.get_width():
             if currentlevelx < levelwidth:

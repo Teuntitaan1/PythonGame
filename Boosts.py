@@ -58,5 +58,5 @@ class SpeedBoost(pygame.sprite.Sprite):
 
     @staticmethod
     def boost(towhat):
-        if towhat.movementspeed < 6:
+        if towhat.bulletmovementspeed < 15:
             towhat.bulletmovementspeed += 1
