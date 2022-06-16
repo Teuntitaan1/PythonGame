@@ -59,16 +59,6 @@ class Level:
         # to render the player above the bullet(looks better)
         for i in self.playerlist:
             i.draw(screen)
-        # ticking system
-        if framecounter - self.lasttick > self.tickspeed:
-
-            for i in self.playerlist:
-                i.tick(self.bulletlist, framecounter)
-            for i in self.enemylist:
-                i.tick()
-
-            self.lasttick = framecounter
-
         # player collision handler
         for i in self.playerlist:
 
@@ -85,3 +75,12 @@ class Level:
             if collidingboostsprite is not None:
                 collidingboostsprite.boost(i)
                 collidingboostsprite.kill()
+        # ticking system
+        if framecounter - self.lasttick > self.tickspeed:
+
+            for i in self.playerlist:
+                i.tick(self.bulletlist, framecounter)
+            for i in self.enemylist:
+                i.tick()
+
+            self.lasttick = framecounter

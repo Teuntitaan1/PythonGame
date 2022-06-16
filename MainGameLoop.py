@@ -63,6 +63,9 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         # global level update statement
         levellist[currentlevelx][currentlevely].update(screen, framecounter)
 
+        text = font.render("level: " + str(currentlevelx) + ", " + str(currentlevely), True, white)
+        screen.blit(text, (0, 0))
+
         # map movement logic
         # player going right
         if player.x > screen.get_width():
@@ -78,16 +81,16 @@ def gameloop(windowsizex, windowsizey, refreshrate):
                 player.x = screen.get_width() - distancewhenswitchinglevels
             else:
                 player.x = 0
-        # player going up
+        # player going down
         elif player.y > screen.get_height():
             if currentlevely < levelheight:
                 currentlevely += 1
                 player.y = 0 + distancewhenswitchinglevels
             else:
                 player.y = screen.get_height()
-        # player going down
+        # player going up
         elif player.y < 0:
-            if currentlevely > levelheight:
+            if currentlevely > 0:
                 currentlevely -= 1
                 player.y = screen.get_height() - distancewhenswitchinglevels
             else:
