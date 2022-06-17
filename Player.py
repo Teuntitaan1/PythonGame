@@ -31,21 +31,21 @@ class Player(pygame.sprite.Sprite):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
         # shooting shit
         self.framelastshot = 0
-        self.shootdelay = 100
+        self.shootdelay = 40
         self.direction = "right"
-        self.bulletmovementspeed = 0
+
 
         # action caching
         self.currentaction = None
 
-    def update(self):
+    def update(self, framecounter, bulletlist):
 
         # update statements
         self.checkhealth()
         self.updaterect()
-        self.handlekeys()
+        self.handlekeys(framecounter, bulletlist)
 
-    def tick(self, bulletlist, framecounter):
+    def tick(self):
 
         if self.currentaction == "left":
             self.x -= self.movementspeed
@@ -57,10 +57,6 @@ class Player(pygame.sprite.Sprite):
             self.y += self.movementspeed
         elif self.currentaction is None:
             pass
-        elif self.currentaction == "shoot":
-            if self.canshoot(framecounter):
-                self.shootsmallbullet(bulletlist)
-                self.framelastshot = framecounter
         self.currentaction = None
 
     def draw(self, screen):
@@ -83,7 +79,7 @@ class Player(pygame.sprite.Sprite):
     def updaterect(self):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
 
-    def handlekeys(self):
+    def handlekeys(self, framecounter, bulletlist):
 
         key = pygame.key.get_pressed()
 
@@ -107,7 +103,9 @@ class Player(pygame.sprite.Sprite):
             self.direction = "down"
             self.image = Photos["PlayerSpriteDown.png"].convert()
         elif key[pygame.K_SPACE]:
-            self.currentaction = "shoot"
+            if self.canshoot(framecounter):
+                self.shootsmallbullet(bulletlist)
+                self.framelastshot = framecounter
 
     # simple gradiant producer from green to red to indicate how close the player is to dying
     def handletextcolor(self):
@@ -127,9 +125,9 @@ class Player(pygame.sprite.Sprite):
             return 0
 
     def shootsmallbullet(self, bulletlist):
-        bulletname = "Bullet" + str(len(bulletlist)+1)
 
-        bulletlist.add(SmallBullet(bulletname, "bullet", self.x+self.width/2, self.y+self.height/2, 7 + self.bulletmovementspeed, self.direction))
+
+        bulletlist.add(SmallBullet(self.x+self.width/2, self.y+self.height/2, self.direction))
 
     def canshoot(self, framecounter):
         if self.framelastshot + self.shootdelay < framecounter:

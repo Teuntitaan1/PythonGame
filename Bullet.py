@@ -4,22 +4,22 @@ from Imports import *
 
 
 class SmallBullet(pygame.sprite.Sprite):
-    def __init__(self, name, tag, x, y, movementspeed, direction):
+    def __init__(self, x, y, direction):
 
         super().__init__()
-        # the sprite to be rendered
-        # kind of useless right now
-        self.name = name
-        # tag for the collision manager to determine what to do
-        self.tag = tag
-        # positioning
         self.x = x
         self.y = y
-        # width and height variables for scaling the image
-        self.height = 20
-        self.width = 40
-        # movementspeed regulators
-        self.movementspeed = movementspeed
+        # width and height variables for scaling the image, movement speed directed by the direction
+        if direction == "left" or direction == "right":
+            print("left or right")
+            self.height = 20
+            self.width = 40
+        elif direction == "up" or direction == "down":
+            print("up or down")
+            self.height = 40
+            self.width = 20
+        self.movementspeed = 80
+
         # collisionbox
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
 
@@ -34,17 +34,7 @@ class SmallBullet(pygame.sprite.Sprite):
         if self.y > (screen.get_height()+200) or self.y < -200:
             self.kill()
 
-        # looks where to go
-        if self.direction == "up":
-            self.y -= self.movementspeed
-        elif self.direction == "down":
-            self.y += self.movementspeed
-        elif self.direction == "left":
-            self.x -= self.movementspeed
-        elif self.direction == "right":
-            self.x += self.movementspeed
         self.updaterect()
-
         pygame.draw.rect(screen, Colors.grey, self.rect)
 
         collidingenemysprite = pygame.sprite.spritecollideany(self, enemylist)
@@ -53,6 +43,24 @@ class SmallBullet(pygame.sprite.Sprite):
         if collidingenemysprite is not None:
             self.attack(collidingenemysprite)
             self.kill()
+
+
+    def tick(self, tickspeed):
+        # looks where to go
+        movementbyincrements = tickspeed/self.movementspeed
+
+        if self.direction == "up":
+            for i in range(tickspeed):
+                self.y -= movementbyincrements
+        elif self.direction == "down":
+            for i in range(tickspeed):
+                self.y += movementbyincrements
+        elif self.direction == "left":
+            for i in range(tickspeed):
+                self.x -= movementbyincrements
+        elif self.direction == "right":
+            for i in range(tickspeed):
+                 self.x += movementbyincrements
 
     def updaterect(self):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])

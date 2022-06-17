@@ -32,31 +32,3 @@ class HealthBoost(pygame.sprite.Sprite):
         towhat.health += 10
 
 
-class SpeedBoost(pygame.sprite.Sprite):
-    def __init__(self, name, tag, xycoord):
-
-        super().__init__()
-        # kind of useless right now
-        self.name = name
-        # tag for the collision manager to determine what to do
-        self.tag = tag
-        # positioning
-        self.x = xycoord["x"]
-        self.y = xycoord["y"]
-        # width and height variables for scaling the image
-        self.height = 80
-        self.width = 80
-
-        # collisionbox
-        self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
-
-    def update(self, screen):
-
-        # update statements
-        self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
-        pygame.draw.rect(screen, Colors.blue, self.rect)
-
-    @staticmethod
-    def boost(towhat):
-        if towhat.bulletmovementspeed < 15:
-            towhat.bulletmovementspeed += 1

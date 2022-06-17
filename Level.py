@@ -1,7 +1,8 @@
 from Imports import *
 from Enemies import SimpleFollowEnemy
-from Boosts import HealthBoost, SpeedBoost
+from Boosts import HealthBoost
 
+# todo fix the bulletshit
 
 class Level:
     def __init__(self, amountofenemies, numberofpowerups, levelnumber, font, player, posarray):
@@ -33,14 +34,11 @@ class Level:
             # generates a random position on the array
             randomnum = random.randint(0, len(self.posarray)-1)
             which = random.randint(1, 100)
-            if which <= 25:
-                boost = HealthBoost("HealthBoost" + str(i), "Boost", self.posarray[randomnum])
-                print("Generated Healthboost" + str(i))
-                self.boostlist.add(boost)
-            else:
-                boost = SpeedBoost("SpeedBoost" + str(i), "Boost", self.posarray[randomnum])
-                print("Generated Speedboost" + str(i))
-                self.boostlist.add(boost)
+
+            boost = HealthBoost("HealthBoost" + str(i), "Boost", self.posarray[randomnum])
+            print("Generated Healthboost" + str(i))
+            self.boostlist.add(boost)
+
             # removes the position from the available points in the array so that nothing spawns on eachother
             self.posarray.pop(randomnum)
 
@@ -49,7 +47,7 @@ class Level:
     def update(self, screen, framecounter):
 
         # entity's in playerlist updater
-        self.playerlist.update()
+        self.playerlist.update(framecounter, self.bulletlist)
         # entity's in enemylist updater
         self.enemylist.update(screen, self.playerlist)
         # entity's in boostlist updater
@@ -75,12 +73,19 @@ class Level:
             if collidingboostsprite is not None:
                 collidingboostsprite.boost(i)
                 collidingboostsprite.kill()
+
+
         # ticking system
         if framecounter - self.lasttick > self.tickspeed:
 
             for i in self.playerlist:
-                i.tick(self.bulletlist, framecounter)
+                i.tick()
             for i in self.enemylist:
                 i.tick()
+            for i in self.bulletlist:
+                i.tick(self.tickspeed)
 
             self.lasttick = framecounter
+
+
+

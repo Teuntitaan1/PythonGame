@@ -4,7 +4,7 @@ from Level import Level
 from Colors import *
 from Player import Player
 from GeneralFunctions import generaterandomarray
-
+from UI import UI
 
 def gameloop(windowsizex, windowsizey, refreshrate):
     pygame.init()
@@ -28,6 +28,9 @@ def gameloop(windowsizex, windowsizey, refreshrate):
     yrow = 0
     distancewhenswitchinglevels = 0
     posarray = generaterandomarray()
+    # UI
+    ui = UI()
+
     # player generation
     randompos = random.randint(0, len(posarray)-1)
     player = Player("Player0", "Player", posarray[randompos], font)
@@ -36,7 +39,7 @@ def gameloop(windowsizex, windowsizey, refreshrate):
 
     for i in range(levelheight):
         for j in range(levelwidth):
-            level = Level(random.randint(0, 1), random.randint(0, 5), levelnumber, font, player, posarray)
+            level = Level(random.randint(0, 3), random.randint(0, 2), levelnumber, font, player, posarray)
             # noinspection PyTypeChecker
             levellist[xrow][yrow] = level
             xrow += 1
@@ -63,6 +66,8 @@ def gameloop(windowsizex, windowsizey, refreshrate):
         # global level update statement
         levellist[currentlevelx][currentlevely].update(screen, framecounter)
 
+        # UI
+        ui.update(screen, framecounter, levellist[currentlevelx][currentlevely].lasttick)
         text = font.render("level: " + str(currentlevelx) + ", " + str(currentlevely), True, white)
         screen.blit(text, (0, 0))
 
