@@ -57,18 +57,37 @@ class Level:
         print("Level number " + str(levelnumber) + " has been generated.")
 
     def update(self, screen, framecounter):
-
-        # entity's in playerlist updater
-        self.playerlist.update(framecounter, self.bulletlist)
-        # entity's in enemylist updater
-        self.enemylist.update(screen, self.playerlist)
-        # entity's in boostlist updater
-        self.boostlist.update(screen)
-        # entity's in bulletlist updater
-        self.bulletlist.update(screen, self.enemylist)
-        # to render the player above the bullet(looks better)
-        for i in self.playerlist:
-            i.draw(screen)
+        # update system
+        x = 0
+        y = 0
+        for i in range(10):
+            for j in range(10):
+                if self.levelgrid[j][i] != 0:
+                    if self.levelgrid[j][i].tag == "Enemy":
+                        self.levelgrid[j][i].update(screen, self.playerlist)
+                    if self.levelgrid[j][i].tag == "Player":
+                        self.levelgrid[j][i].update(screen, framecounter, self.bulletlist)
+                    if self.levelgrid[j][i].tag == "Boost":
+                        self.levelgrid[j][i].update(screen)
+                x += 1
+            x = 0
+            y += 1
+        # ticker system
+        if framecounter - self.lasttick > self.tickspeed:
+            x = 0
+            y = 0
+            for i in range(10):
+                for j in range(10):
+                    if self.levelgrid[j][i] != 0:
+                        if self.levelgrid[j][i].tag == "Enemy":
+                            self.levelgrid[j][i].tick()
+                        if self.levelgrid[j][i].tag == "Player":
+                            self.levelgrid[j][i].tick()
+                    x += 1
+                x = 0
+                y += 1
+            self.lasttick = framecounter
+        """
         # player collision handler
         for i in self.playerlist:
 
@@ -85,19 +104,7 @@ class Level:
             if collidingboostsprite is not None:
                 collidingboostsprite.boost(i)
                 collidingboostsprite.kill()
-
-
-        # ticking system
-        if framecounter - self.lasttick > self.tickspeed:
-
-            for i in self.playerlist:
-                i.tick()
-            for i in self.enemylist:
-                i.tick()
-            for i in self.bulletlist:
-                i.tick(self.tickspeed)
-
-            self.lasttick = framecounter
+        """
 
 
 

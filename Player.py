@@ -38,12 +38,28 @@ class Player(pygame.sprite.Sprite):
         # action caching
         self.currentaction = None
 
-    def update(self, framecounter, bulletlist):
+    def update(self, screen, framecounter, bulletlist):
 
         # update statements
         self.checkhealth()
         self.updaterect()
         self.handlekeys(framecounter, bulletlist)
+
+        # drawing the sprite and text to the screen
+        screen.blit(self.image, [self.x, self.y])
+
+        # health indicator rendering
+        if self.calculateextrahealth() > 0:
+            # if health is above the beginhealth(150 in this case)
+            healthindicatortext = self.font.render(str(150), True, self.handletextcolor())
+            screen.blit(healthindicatortext, [self.x, self.y - (self.height / 2.5)])
+            # like the yellow hearts in minecraft
+            extrahealthindicatortext = self.font.render(str(self.calculateextrahealth()), True, Colors.orange)
+            screen.blit(extrahealthindicatortext, [self.x, self.y - ((self.height / 2.5)*2)])
+        else:
+            # if health is below or equal to the beginhealth(150 in this case)
+            healthindicatortext = self.font.render(str(self.health), True, self.handletextcolor())
+            screen.blit(healthindicatortext, [self.x, self.y - (self.height / 2.5)])
 
     def tick(self):
 
@@ -59,22 +75,7 @@ class Player(pygame.sprite.Sprite):
             pass
         self.currentaction = None
 
-    def draw(self, screen):
 
-        screen.blit(self.image, [self.x, self.y])
-
-        # health indicator rendering
-        if self.calculateextrahealth() > 0:
-            # if health is above the beginhealth(150 in this case)
-            healthindicatortext = self.font.render(str(150), True, self.handletextcolor())
-            screen.blit(healthindicatortext, [self.x, self.y - (self.height / 2.5)])
-            # like the yellow hearts in minecraft
-            extrahealthindicatortext = self.font.render(str(self.calculateextrahealth()), True, Colors.orange)
-            screen.blit(extrahealthindicatortext, [self.x, self.y - ((self.height / 2.5)*2)])
-        else:
-            # if health is below or equal to the beginhealth(150 in this case)
-            healthindicatortext = self.font.render(str(self.health), True, self.handletextcolor())
-            screen.blit(healthindicatortext, [self.x, self.y - (self.height / 2.5)])
 
     def updaterect(self):
         self.rect = pygame.Rect([self.x, self.y], [self.width, self.height])
