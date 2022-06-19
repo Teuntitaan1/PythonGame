@@ -27,3 +27,16 @@ def generaterandomarray():
         y += 80
         x = 0
     return poslist
+
+def getgridposition(position):
+    x = int(position["x"]/80)
+    y = int(position["y"]/80)
+    print("position x: " + str(position["x"]) + " returns " + str(x))
+    print("position y: " + str(position["y"]) + " returns " + str(y))
+
+    xypos = {
+        "x": x,
+        "y": y
+    }
+    return xypos
+

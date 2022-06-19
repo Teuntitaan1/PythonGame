@@ -1,12 +1,18 @@
 from Imports import *
 from Enemies import SimpleFollowEnemy
 from Boosts import HealthBoost
-
+from GeneralFunctions import getgridposition
 # todo fix the bulletshit
-
+# todo fix the levelgrid
+# todo add a level editor(should not be that hard just add it as a statein maingameloop
+# todo add a save and load system, saving should be in a .json file and loading should be easy
 class Level:
     def __init__(self, amountofenemies, numberofpowerups, levelnumber, font, player, posarray):
 
+        # every entity should be on the grid
+        levelgridwidth, levelgridheight = 10, 10
+        self.levelgrid = [[0 for _ in range(levelgridwidth)] for _ in range(levelgridheight)]
+        self.levelgrid[int(player.x/800-1)][int(player.y/800-1)] = player
         # entity spawning
         self.playerlist = pygame.sprite.GroupSingle()
         self.enemylist = pygame.sprite.Group()
@@ -24,7 +30,11 @@ class Level:
             randomnum = random.randint(0, len(self.posarray)-1)
             enemy = SimpleFollowEnemy("SimpleFollowEnemy" + str(i), "Enemy", self.posarray[randomnum], font)
             # removes the position from the available points in the array so that nothing spawns on eachother
+            gridposition = getgridposition(self.posarray[randomnum])
+            # noinspection PyTypeChecker
+            self.levelgrid[gridposition["x"]][gridposition["y"]] = enemy
             self.posarray.pop(randomnum)
+
             print("Generated enemy" + str(i))
             self.enemylist.add(enemy)
 
@@ -38,7 +48,9 @@ class Level:
             boost = HealthBoost("HealthBoost" + str(i), "Boost", self.posarray[randomnum])
             print("Generated Healthboost" + str(i))
             self.boostlist.add(boost)
-
+            gridposition = getgridposition(self.posarray[randomnum])
+            # noinspection PyTypeChecker
+            self.levelgrid[gridposition["x"]][gridposition["y"]] = boost
             # removes the position from the available points in the array so that nothing spawns on eachother
             self.posarray.pop(randomnum)
 
